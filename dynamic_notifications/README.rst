@@ -37,11 +37,11 @@ Configuration
 
 Screenshots
 -----------
-| **Notification Configuration UI**
-| ![Screenshot 1](static/description/images/notification_01.png)
+| **Notification Configuration Menu**
+| .. image:: /static/description/images/notification_01.png
 
-| **In-App Notification Example**
-| ![Screenshot 2](static/description/images/notification_02.png)
+| **Notification Configuration UI**
+| .. image:: /static/description/images/notification_02.png
 
 Support & Contact
 -----------------
