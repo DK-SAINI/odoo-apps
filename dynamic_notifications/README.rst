@@ -38,10 +38,10 @@ Configuration
 Screenshots
 -----------
 | **Notification Configuration Menu**
-| .. image:: /static/description/images/notification_01.png
+| .. image:: images/notification_01.png
 
 | **Notification Configuration UI**
-| .. image:: /static/description/images/notification_02.png
+| .. image:: images/notification_02.png
 
 Support & Contact
 -----------------
