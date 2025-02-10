@@ -17,7 +17,7 @@ class BaseModelExtension(models.AbstractModel):
         _logger.info(f"\n\nCreating records for model {model_name}")
 
         # Fetch all active notification configurations for this model
-        notification_configs = self.env["notification.config"].search(
+        notification_configs = self.env["notification.config"].sudo().search(
             [
                 ("model_id.model", "=", model_name),
                 ("active", "=", True),
@@ -44,7 +44,7 @@ class BaseModelExtension(models.AbstractModel):
         _logger.info(f"Updating records in model {self._name}")
 
         # Fetch all notification configs for this model where state change is enabled
-        notification_configs = self.env["notification.config"].search(
+        notification_configs = self.env["notification.config"].sudo().search(
             [
                 ("model_id.model", "=", self._name),
                 ("active", "=", True),
