@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Dynamic Notifications Manager",
+    "name": "Dynamic Notifications",
     "version": "17.0.0.1",
-    "author": "Dheeraj Chauhan",
+    "author": "DK",
     "category": "Tools",
-    "summary": "Configure dynamic notifications for Odoo models.",
+    "summary": "Configure dynamic notifications for models.",
     "depends": ["base", "mail"],
     "license": "LGPL-3",
     "data": [

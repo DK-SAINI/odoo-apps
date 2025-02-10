@@ -62,7 +62,6 @@ class BaseModelExtension(models.AbstractModel):
         # Process notifications for state changes
         for notification in notification_configs:
             field_name = notification.field_id.name
-
             allowed_values = notification.selection.mapped("value")
             for record in self:
                 new_value = record[field_name]
