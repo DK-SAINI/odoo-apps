@@ -73,4 +73,4 @@ class NotificationConfig(models.Model):
                     """,
                     "email_to": user.email,
                 }
-                self.env["mail.mail"].create(mail_values).send()
+                self.env["mail.mail"].sudo().create(mail_values).send()
