@@ -9,7 +9,6 @@ Key Features
 
 - Custom widget for `float` fields showing time in HH:MM:SS format.
 - Supports both input and output with seconds.
-- Compatible with Odoo 16 and above.
 - Clean, user-friendly input component.
 - Fully integrated with Odoo OWL framework.
 
