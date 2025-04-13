@@ -2,7 +2,7 @@
 {
     "name": "Dynamic Notifications",
     "version": "18.0.0.1",
-    "author": "DK",
+    "author": "Dheeraj Chauhan",
     "category": "Tools",
     "summary": "Configure dynamic notifications for models.",
     "depends": ["base", "mail"],
