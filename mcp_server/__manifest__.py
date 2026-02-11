@@ -37,7 +37,7 @@ Features:
         'views/res_config_settings_views.xml',
         'views/menu.xml',
     ],
-    "images": ["static/description/banner.gif"],
+    "images": ["static/description/banner.png"],
     'installable': True,
     'application': False,
     'auto_install': False,
