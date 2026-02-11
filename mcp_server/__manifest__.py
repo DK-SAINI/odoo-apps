@@ -26,8 +26,6 @@ Features:
 * Smart field defaults (excludes binary fields)
 * Summary generator for browse/search results
     """,
-    'author': 'Space-O Technologies',
-    'website': 'https://www.spaceotechnologies.com',
     'license': 'LGPL-3',
     'depends': ['base', 'mail'],
     'data': [
@@ -39,6 +37,7 @@ Features:
         'views/res_config_settings_views.xml',
         'views/menu.xml',
     ],
+    "images": ["static/description/banner.gif"],
     'installable': True,
     'application': False,
     'auto_install': False,
