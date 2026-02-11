@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Server for Odoo 19.0 - Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #1c2333;
+            --bg-code: #0d1117;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-purple: #bc8cff;
+            --border: #30363d;
+            --border-light: #21262d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #1a1f35 0%, #0d1117 50%, #0a1628 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 60px 0 50px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(88, 166, 255, 0.12);
+            color: var(--accent-blue);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            margin-bottom: 18px;
+        }
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #e6edf3, #58a6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p { color: var(--text-secondary); font-size: 18px; max-width: 650px; margin: 0 auto 28px; }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        .stat { text-align: center; }
+        .stat-value { font-size: 28px; font-weight: 700; color: var(--accent-blue); }
+        .stat-label { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Sections */
+        .section { padding: 50px 0; border-bottom: 1px solid var(--border-light); }
+        .section:last-child { border-bottom: none; }
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 22px;
+            transition: border-color 0.2s;
+        }
+        .feature-card:hover { border-color: var(--accent-blue); }
+        .feature-icon {
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            margin-bottom: 14px;
+        }
+        .feature-icon.blue { background: rgba(88, 166, 255, 0.12); }
+        .feature-icon.green { background: rgba(63, 185, 80, 0.12); }
+        .feature-icon.orange { background: rgba(210, 153, 34, 0.12); }
+        .feature-icon.purple { background: rgba(188, 140, 255, 0.12); }
+        .feature-icon.red { background: rgba(248, 81, 73, 0.12); }
+        .feature-card h3 { font-size: 16px; margin-bottom: 6px; }
+        .feature-card p { color: var(--text-secondary); font-size: 14px; }
+
+        /* Steps */
+        .steps { display: flex; flex-direction: column; gap: 40px; }
+        .step {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .step-number {
+            width: 32px; height: 32px;
+            background: var(--accent-blue);
+            color: #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .step-header h3 { font-size: 17px; }
+        .step-body { padding: 20px 24px; }
+        .step-body p { color: var(--text-secondary); font-size: 14px; margin-bottom: 12px; }
+        .step-body .path {
+            display: inline-block;
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 13px;
+            color: var(--accent-blue);
+            margin-bottom: 10px;
+        }
+        .step-screenshot {
+            padding: 0 24px 24px;
+        }
+        .step-screenshot img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        /* API Table */
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .api-table th {
+            text-align: left;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .api-table td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .method-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: monospace;
+        }
+        .method-get { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); }
+        .method-post { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); }
+        .endpoint-path {
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 13px;
+            color: var(--accent-orange);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px 20px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        .code-block code {
+            font-family: 'SFMono-Regular', Consolas, monospace;
+            font-size: 13px;
+            color: var(--text-primary);
+            white-space: pre;
+        }
+        .code-label {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px 4px 0 0;
+            padding: 4px 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: monospace;
+            margin-bottom: -1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Error Table */
+        .error-table { width: 100%; border-collapse: collapse; }
+        .error-table th {
+            text-align: left;
+            padding: 8px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .error-table td {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .status-code {
+            font-weight: 700;
+            font-family: monospace;
+        }
+        .status-4xx { color: var(--accent-orange); }
+        .status-5xx { color: var(--accent-red); }
+
+        /* Footer */
+        .footer {
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .footer p { color: var(--text-muted); font-size: 13px; }
+        .footer a { color: var(--accent-blue); text-decoration: none; }
+
+        /* Tips */
+        .tip {
+            background: rgba(63, 185, 80, 0.08);
+            border: 1px solid rgba(63, 185, 80, 0.2);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 12px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .tip strong { color: var(--accent-green); }
+
+        .warning {
+            background: rgba(248, 81, 73, 0.08);
+            border: 1px solid rgba(248, 81, 73, 0.2);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 12px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .warning strong { color: var(--accent-red); }
+    </style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<div class="hero">
+    <div class="container">
+        <div class="hero-badge">Odoo 19.0 Module</div>
+        <h1>MCP Server</h1>
+        <p>Connect AI assistants (Claude, Cursor, VS Code, Claude Code) to your Odoo ERP securely via the Model Context Protocol standard.</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-value">13</div>
+                <div class="stat-label">REST Endpoints</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">2</div>
+                <div class="stat-label">XML-RPC Endpoints</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">v19.0</div>
+                <div class="stat-label">Odoo Compatible</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">53</div>
+                <div class="stat-label">Tests Passed</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Features</h2>
+        <p class="section-subtitle">Everything you need for secure AI-ERP integration</p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon blue">&#128274;</div>
+                <h3>REST API + XML-RPC</h3>
+                <p>Full REST API with JSON responses plus XML-RPC proxy for legacy tools. Both protected by MCP permission layer.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon green">&#9989;</div>
+                <h3>Per-Model Access Control</h3>
+                <p>Expose only the models you need with granular CRUD permissions and field-level restrictions per model.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon orange">&#128273;</div>
+                <h3>Bearer Token + Basic Auth</h3>
+                <p>Authenticate via API Key (Bearer Token) or HTTP Basic Auth. Supports Odoo's native API key system.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon purple">&#9201;</div>
+                <h3>Rate Limiting</h3>
+                <p>Configurable per-minute rate limits to prevent API abuse. Returns retry-after headers when exceeded.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon red">&#128203;</div>
+                <h3>Full Audit Logging</h3>
+                <p>Every API call logged with user, IP, model, operation, status, and duration. Auto-cleanup of old logs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon blue">&#127760;</div>
+                <h3>IP Whitelist &amp; Caching</h3>
+                <p>Restrict access by IP address. Built-in response cache with configurable TTL for read-heavy workloads.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Setup Guide -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Setup Guide</h2>
+        <p class="section-subtitle">Configure MCP Server in 5 easy steps</p>
+        <div class="steps">
+
+            <!-- Step 1: Install & Enable -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3>Install &amp; Enable MCP Server</h3>
+                </div>
+                <div class="step-body">
+                    <p>After installing the module, go to Settings and click <strong>MCP Server</strong> in the left sidebar. Toggle the switch to enable MCP Server. You can also configure rate limits, IP whitelist, caching, and audit logging here.</p>
+                    <div class="path">Settings &gt; MCP Server</div>
+                </div>
+                <div class="step-screenshot">
+                    <img src="02b_settings_mcp.png" alt="MCP Server settings showing Enable toggle, YOLO Mode, Rate Limit, IP Whitelist, Caching, and Audit Logging">
+                </div>
+            </div>
+
+            <!-- Step 2: Add Models -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3>Add Models to Expose</h3>
+                </div>
+                <div class="step-body">
+                    <p>Navigate to the MCP Model Access list. Here you can see all currently exposed models with their permissions. Click <strong>New</strong> to add a model.</p>
+                    <div class="path">Settings &gt; Technical &gt; MCP Server &gt; Model Access</div>
+                </div>
+                <div class="step-screenshot">
+                    <img src="03_enabled_models.png" alt="MCP Model Access list showing exposed models">
+                </div>
+            </div>
+
+            <!-- Step 3: Configure Model Permissions -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3>Configure Model Permissions</h3>
+                </div>
+                <div class="step-body">
+                    <p>In the model form, select the Odoo model to expose (e.g., <strong>Contact / res.partner</strong>). Toggle the CRUD permissions: Read, Write, Create, Delete. You can also set:</p>
+                    <p>&bull; <strong>Allowed Fields</strong> &mdash; JSON list of fields to expose (empty = all fields)<br>
+                       &bull; <strong>Cache TTL</strong> &mdash; Cache duration in seconds for read operations<br>
+                       &bull; <strong>Allowed Groups</strong> &mdash; Restrict access to specific user groups<br>
+                       &bull; <strong>Notes</strong> &mdash; Description for documentation purposes</p>
+                    <div class="path">MCP Model Access &gt; New (or click existing record)</div>
+                </div>
+                <div class="step-screenshot">
+                    <img src="04_add_model.png" alt="MCP Model Access form with CRUD permissions and field restrictions">
+                </div>
+            </div>
+
+            <!-- Step 4: Generate API Key -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <h3>Generate API Key</h3>
+                </div>
+                <div class="step-body">
+                    <p>Go to your user profile and navigate to the <strong>API Keys</strong> tab. Click <strong>New API Key</strong>, give it a description, and set the scope to <code>rpc</code>. Copy the generated key &mdash; you'll need it to configure your AI client.</p>
+                    <div class="path">Settings &gt; Users &amp; Companies &gt; Users &gt; [Your User] &gt; API Keys tab</div>
+                    <div class="tip">
+                        <strong>Tip:</strong> Generate a unique API key for each AI integration. This makes it easy to revoke access for a specific tool without affecting others.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: Monitor Audit Logs -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <h3>Monitor with Audit Logs</h3>
+                </div>
+                <div class="step-body">
+                    <p>Every MCP API call is automatically logged. View logs in list format or switch to graph/pivot view for analytics. Logs capture user, IP, model, operation, status (success/error/denied), and response time.</p>
+                    <div class="path">Settings &gt; Technical &gt; MCP Server &gt; Audit Logs</div>
+                </div>
+                <div class="step-screenshot">
+                    <img src="05_audit_logs.png" alt="MCP Audit Logs showing API call history with color-coded status">
+                </div>
+            </div>
+
+            <!-- Audit Graph -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">&#128200;</div>
+                    <h3>Audit Analytics (Graph/Pivot View)</h3>
+                </div>
+                <div class="step-body">
+                    <p>Switch to the graph or pivot view to analyze API usage patterns &mdash; see which models are most accessed, error rates, and performance metrics over time.</p>
+                </div>
+                <div class="step-screenshot">
+                    <img src="06_audit_graph.png" alt="MCP Audit Logs graph view showing API usage analytics">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- API Reference -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">API Endpoints</h2>
+        <p class="section-subtitle">Complete REST API reference</p>
+
+        <h3 style="color: var(--accent-green); margin-bottom: 12px; font-size: 16px;">Public Endpoints (No Auth Required)</h3>
+        <table class="api-table">
+            <thead>
+                <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method-badge method-get">GET</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/health</span></td>
+                    <td>Health check &mdash; returns MCP status, version, timestamp</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="color: var(--accent-blue); margin: 24px 0 12px; font-size: 16px;">Authenticated Endpoints (Bearer Token or Basic Auth)</h3>
+        <table class="api-table">
+            <thead>
+                <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method-badge method-get">GET</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/system/info</span></td>
+                    <td>System info &mdash; Odoo version, database, exposed model count</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/auth/validate</span></td>
+                    <td>Validate credentials, return user info and MCP roles</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-get">GET</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models</span></td>
+                    <td>List all exposed models with CRUD permissions</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-get">GET</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/fields</span></td>
+                    <td>Get field metadata (name, type, required, readonly, etc.)</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/search</span></td>
+                    <td>Search records with domain filter, fields, limit</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/read</span></td>
+                    <td>Read specific records by IDs</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/browse</span></td>
+                    <td>Paginated browse with offset, limit, has_more</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/count</span></td>
+                    <td>Count records matching a domain filter</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/create</span></td>
+                    <td>Create a new record with field values</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/write</span></td>
+                    <td>Update existing records by IDs</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/unlink</span></td>
+                    <td>Delete records by IDs</td>
+                </tr>
+                <tr>
+                    <td><span class="method-badge method-post">POST</span></td>
+                    <td><span class="endpoint-path">/mcp/api/v1/models/&lt;model&gt;/call</span></td>
+                    <td>Call arbitrary model method with args/kwargs</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 style="color: var(--accent-purple); margin: 24px 0 12px; font-size: 16px;">XML-RPC Endpoints</h3>
+        <table class="api-table">
+            <thead>
+                <tr><th>Endpoint</th><th>Methods</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="endpoint-path">/mcp/xmlrpc/2/common</span></td>
+                    <td><code>version()</code>, <code>authenticate(db, login, password)</code></td>
+                </tr>
+                <tr>
+                    <td><span class="endpoint-path">/mcp/xmlrpc/2/object</span></td>
+                    <td><code>execute_kw(db, uid, password, model, method, args, kwargs)</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Health Endpoint Screenshot -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Health Check</h2>
+        <p class="section-subtitle">Quick way to verify MCP Server is running</p>
+        <div class="code-label">GET /mcp/api/v1/health</div>
+        <div class="code-block"><code>{
+  "status": "ok",
+  "timestamp": "2026-02-09T10:34:06Z",
+  "module_version": "19.0.1.0.0",
+  "mcp_enabled": true
+}</code></div>
+        <div style="margin-top: 16px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border);">
+            <img src="07_health.png" alt="Health endpoint JSON response" style="width: 100%; display: block;">
+        </div>
+    </div>
+</div>
+
+<!-- Usage Examples -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Usage Examples</h2>
+        <p class="section-subtitle">Quick start with curl and Python</p>
+
+        <h3 style="margin-bottom: 10px; font-size: 16px;">Search Partners (curl)</h3>
+        <div class="code-block"><code>curl -X POST http://localhost:8069/mcp/api/v1/models/res-partner/search \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"domain": [["is_company", "=", true]], "fields": ["name", "email"], "limit": 5}'</code></div>
+        <div class="tip"><strong>Note:</strong> Use dashes (<code>res-partner</code>) instead of dots (<code>res.partner</code>) in the URL path for model names.</div>
+
+        <h3 style="margin: 20px 0 10px; font-size: 16px;">Create a Record (curl)</h3>
+        <div class="code-block"><code>curl -X POST http://localhost:8069/mcp/api/v1/models/res-partner/create \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"values": {"name": "New Partner", "email": "new@example.com", "is_company": true}}'</code></div>
+
+        <h3 style="margin: 20px 0 10px; font-size: 16px;">XML-RPC (Python)</h3>
+        <div class="code-block"><code>import xmlrpc.client
+
+common = xmlrpc.client.ServerProxy('http://localhost:8069/mcp/xmlrpc/2/common')
+print(common.version())
+
+uid = common.authenticate('your_db', 'admin', 'admin', {})
+
+models = xmlrpc.client.ServerProxy('http://localhost:8069/mcp/xmlrpc/2/object')
+partners = models.execute_kw('your_db', uid, 'admin',
+    'res.partner', 'search_read', [[]],
+    {'fields': ['name', 'email'], 'limit': 5})
+print(partners)</code></div>
+    </div>
+</div>
+
+<!-- VS Code Integration -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">VS Code Integration</h2>
+        <p class="section-subtitle">Use Odoo data directly from VS Code AI chat (Copilot, Claude, etc.)</p>
+
+        <div class="steps">
+            <!-- How it works -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number" style="background: var(--accent-purple);">&#9889;</div>
+                    <h3>How It Works</h3>
+                </div>
+                <div class="step-body">
+                    <p>The module includes a <strong>MCP Bridge script</strong> (<code>mcp_bridge.py</code>) that translates between the MCP protocol (used by VS Code) and the Odoo REST API. Your AI assistant in VS Code gets <strong>12 tools</strong> to interact with Odoo.</p>
+                    <div class="code-block"><code>You (VS Code Chat)  &rarr;  AI Assistant (Copilot / Claude)
+        &darr;
+MCP Bridge (mcp_bridge.py)  &larr;  stdio protocol
+        &darr;
+Odoo REST API  &rarr;  /mcp/api/v1/...
+        &darr;
+Database  &rarr;  Returns JSON data
+        &darr;
+AI reads data and gives you a human-friendly answer</code></div>
+                </div>
+            </div>
+
+            <!-- Step 1: Install dependencies -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h3>Install Python Dependencies</h3>
+                </div>
+                <div class="step-body">
+                    <p>The bridge requires two Python packages: <code>mcp</code> and <code>httpx</code>.</p>
+                    <div class="code-block"><code>pip install "mcp[cli]" httpx</code></div>
+                </div>
+            </div>
+
+            <!-- Step 2: Create mcp.json -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <h3>Create VS Code MCP Config</h3>
+                </div>
+                <div class="step-body">
+                    <p>Create <code>.vscode/mcp.json</code> in your workspace root (or in <code>~/.vscode/mcp.json</code> for global config):</p>
+                    <div class="code-label">.vscode/mcp.json</div>
+                    <div class="code-block"><code>{
+  "servers": {
+    "odoo": {
+      "command": "python3",
+      "args": [
+        "/path/to/mcp_server/mcp_bridge.py"
+      ],
+      "env": {
+        "ODOO_URL": "http://localhost:8069",
+        "ODOO_API_KEY": "your-api-key-here",
+        "ODOO_DB": "your-database-name (required for multi-db production)"
+      }
+    }
+  }
+}</code></div>
+                    <div class="tip">
+                        <strong>Tip:</strong> You can use <code>ODOO_LOGIN</code> + <code>ODOO_PASSWORD</code> instead of <code>ODOO_API_KEY</code> for Basic Auth, but API keys are recommended for production.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Reload VS Code -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <h3>Reload VS Code</h3>
+                </div>
+                <div class="step-body">
+                    <p>Press <code>Ctrl+Shift+P</code> &rarr; type <strong>"Reload Window"</strong> &rarr; select <strong>"Developer: Reload Window"</strong>. The MCP server will auto-start.</p>
+                </div>
+            </div>
+
+            <!-- Step 4: Use it -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <h3>Start Using in Chat</h3>
+                </div>
+                <div class="step-body">
+                    <p>Open the AI chat panel (<code>Ctrl+Shift+I</code>). Click the <strong>tools icon</strong> (wrench) in the chat input &mdash; you should see <strong>"odoo"</strong> listed with 12 tools. Then just ask in natural language:</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Tools Table -->
+        <h3 style="color: var(--accent-blue); margin: 30px 0 12px; font-size: 16px;">Available MCP Tools in VS Code</h3>
+        <table class="api-table">
+            <thead>
+                <tr><th>Tool</th><th>What It Does</th><th>Example Prompt</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>odoo_health</code></td>
+                    <td>Check server status</td>
+                    <td>"Is Odoo running?"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_system_info</code></td>
+                    <td>Get version &amp; DB info</td>
+                    <td>"What Odoo version is this?"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_list_models</code></td>
+                    <td>List exposed models</td>
+                    <td>"What models can I access?"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_model_fields</code></td>
+                    <td>Get field metadata</td>
+                    <td>"Show fields on res.partner"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_search</code></td>
+                    <td>Search with domain filter</td>
+                    <td>"Find all company partners"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_browse</code></td>
+                    <td>Paginated search + summary</td>
+                    <td>"Browse sale orders, page 2"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_read</code></td>
+                    <td>Read records by ID</td>
+                    <td>"Read partner with ID 1"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_count</code></td>
+                    <td>Count matching records</td>
+                    <td>"How many invoices exist?"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_create</code></td>
+                    <td>Create a new record</td>
+                    <td>"Create a partner named John"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_write</code></td>
+                    <td>Update existing records</td>
+                    <td>"Update partner 5's email"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_delete</code></td>
+                    <td>Delete records</td>
+                    <td>"Delete partner 42"</td>
+                </tr>
+                <tr>
+                    <td><code>odoo_call_method</code></td>
+                    <td>Call a model method</td>
+                    <td>"Call fields_get on sale.order"</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="tip" style="margin-top: 20px;">
+            <strong>Tip:</strong> You don't write any code &mdash; just ask questions in natural language in the VS Code chat panel. The AI automatically picks the right tool, calls the Odoo API, and shows you the results.
+        </div>
+    </div>
+</div>
+
+<!-- Client Configuration -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Other AI Client Configuration</h2>
+        <p class="section-subtitle">Connect Claude Desktop, Claude Code CLI, or Cursor to Odoo</p>
+
+        <h3 style="margin-bottom: 10px; font-size: 16px;">Claude Desktop</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">
+            Config file: <code>~/.config/claude/claude_desktop_config.json</code> (Linux) &bull;
+            <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS) &bull;
+            <code>%APPDATA%\Claude\claude_desktop_config.json</code> (Windows)
+        </p>
+        <div class="code-block"><code>{
+  "mcpServers": {
+    "odoo": {
+      "command": "python3",
+      "args": ["/path/to/mcp_server/mcp_bridge.py"],
+      "env": {
+        "ODOO_URL": "http://localhost:8069",
+        "ODOO_API_KEY": "your-api-key-here",
+        "ODOO_DB": "your-database-name"
+      }
+    }
+  }
+}</code></div>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">After saving, restart Claude Desktop completely. You'll see "Odoo MCP Server" in the tools list.</p>
+
+        <h3 style="margin: 24px 0 10px; font-size: 16px;">Claude Code (CLI / VS Code Extension)</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Run this command in your terminal:</p>
+        <div class="code-block"><code># Step 1: Install dependencies
+pip install "mcp[cli]" httpx
+
+# Step 2: Add MCP server (available in all projects)
+claude mcp add-json odoo '{
+  "command": "python3",
+  "args": ["/path/to/mcp_server/mcp_bridge.py"],
+  "env": {
+    "ODOO_URL": "http://localhost:8069",
+    "ODOO_API_KEY": "your-api-key-here",
+    "ODOO_DB": "your-database-name"
+  }
+}' -s user
+
+# Step 3: Restart Claude Code, then verify
+# Type /mcp in Claude Code &mdash; should show: odoo - Connected</code></div>
+        <div class="tip">
+            <strong>Scope options:</strong>
+            <code>-s user</code> = available in all your projects (recommended) &bull;
+            <code>-s local</code> = only current project (private) &bull;
+            <code>-s project</code> = shared via .mcp.json (for teams)
+        </div>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
+            To remove or update: <code>claude mcp remove odoo -s user</code> &bull;
+            To list servers: <code>claude mcp list</code>
+        </p>
+
+        <h3 style="margin: 24px 0 10px; font-size: 16px;">Cursor IDE</h3>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">Config file: <code>~/.cursor/mcp.json</code></p>
+        <div class="code-block"><code>{
+  "mcpServers": {
+    "odoo": {
+      "command": "python3",
+      "args": ["/path/to/mcp_server/mcp_bridge.py"],
+      "env": {
+        "ODOO_URL": "http://localhost:8069",
+        "ODOO_API_KEY": "your-api-key-here",
+        "ODOO_DB": "your-database-name"
+      }
+    }
+  }
+}</code></div>
+        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">After saving, restart Cursor. The Odoo tools will appear in the AI assistant's tool list.</p>
+
+        <div class="tip" style="margin-top: 20px;">
+            <strong>Tip:</strong> Replace <code>/path/to/mcp_server/mcp_bridge.py</code> with the actual <strong>full absolute path</strong> to the bridge script in your Odoo installation, e.g. <code>/opt/odoo/addons/mcp_server/mcp_bridge.py</code>
+        </div>
+        <div class="warning" style="margin-top: 12px;">
+            <strong>Important:</strong> <code>ODOO_DB</code> is <strong>required for production</strong> servers with multiple databases. The bridge sends it as the <code>X-Odoo-Database</code> header (Odoo 19 native). For single-database setups it can be omitted.
+        </div>
+    </div>
+</div>
+
+<!-- Error Codes -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Error Responses</h2>
+        <p class="section-subtitle">Standard error codes returned by the API</p>
+        <table class="error-table">
+            <thead>
+                <tr><th>HTTP Code</th><th>Error Code</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="status-code status-4xx">401</span></td>
+                    <td>AUTH_INVALID</td>
+                    <td>Missing or invalid credentials (no header, wrong password, invalid API key)</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-4xx">403</span></td>
+                    <td>BLOCKED_MODEL</td>
+                    <td>Model is security-blocked (e.g., ir.config_parameter, ir.rule)</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-4xx">403</span></td>
+                    <td>OPERATION_DENIED</td>
+                    <td>Operation not allowed on model (e.g., delete when delete_access=False)</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-4xx">404</span></td>
+                    <td>MODEL_NOT_FOUND</td>
+                    <td>Model is not exposed via MCP (not in Model Access list)</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-4xx">429</span></td>
+                    <td>RATE_LIMITED</td>
+                    <td>Rate limit exceeded &mdash; includes retry_after value in seconds</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-5xx">500</span></td>
+                    <td>INTERNAL_ERROR</td>
+                    <td>Server error (check Odoo logs for details)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Security Best Practices -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Security Best Practices</h2>
+        <p class="section-subtitle">Keep your Odoo instance secure</p>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon green">&#128272;</div>
+                <h3>Use HTTPS in Production</h3>
+                <p>Always deploy behind a reverse proxy (Nginx/Caddy) with TLS certificates to encrypt API traffic.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon blue">&#128273;</div>
+                <h3>Unique API Keys</h3>
+                <p>Generate a separate API key for each AI integration. Revoke individually if compromised.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon orange">&#127760;</div>
+                <h3>Enable IP Whitelist</h3>
+                <p>In production, restrict access to known IP addresses only. One IP per line in settings.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon purple">&#128203;</div>
+                <h3>Minimal Model Exposure</h3>
+                <p>Only expose models that your AI needs. Use field restrictions to hide sensitive columns.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon red">&#128683;</div>
+                <h3>Disable YOLO Mode</h3>
+                <p>YOLO mode bypasses all permission checks. Never enable it in production environments.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon green">&#128200;</div>
+                <h3>Review Audit Logs</h3>
+                <p>Regularly check audit logs for suspicious activity. Logs auto-cleanup after 90 days (configurable).</p>
+            </div>
+        </div>
+        <div class="warning" style="margin-top: 20px;">
+            <strong>Warning:</strong> Never commit API keys to version control. Use environment variables or Odoo's system parameters for sensitive configuration.
+        </div>
+    </div>
+</div>
+
+<!-- Support & Contact -->
+<div class="section">
+    <div class="container">
+        <h2 class="section-title">Support &amp; Contact</h2>
+        <p class="section-subtitle">For support or feature requests, get in touch</p>
+        <div class="feature-card" style="max-width: 480px;">
+            <div class="feature-icon blue">&#128231;</div>
+            <h3>Email</h3>
+            <p><a href="mailto:dk.odootech@gmail.com" style="color: var(--accent-blue); text-decoration: none;">dk.odootech@gmail.com</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="container">
+        <p><strong>MCP Server for Odoo</strong> &mdash; v19.0.1.0.0 &bull; License: LGPL-3 &bull; Python 3.10+ &bull; Dependencies: base, mail</p>
+        <p style="margin-top: 8px;">Built for secure AI-ERP integration using the <a href="https://modelcontextprotocol.io" target="_blank">Model Context Protocol</a> standard.</p>
+    </div>
+</div>
+
+</body>
+</html>
