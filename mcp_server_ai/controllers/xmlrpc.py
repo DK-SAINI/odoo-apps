@@ -63,7 +63,7 @@ class MCPXmlRpcController(http.Controller):
     def _check_mcp_enabled(self):
         """Check if MCP is enabled. Returns fault response or None."""
         ICP = request.env['ir.config_parameter'].sudo()
-        enabled = ICP.get_param('mcp_server.enabled', 'False')
+        enabled = ICP.get_param('mcp_server_ai.enabled', 'False')
         if enabled.lower() not in ('true', '1'):
             return _xmlrpc_fault(1, 'MCP Server is disabled.')
         return None
@@ -74,7 +74,7 @@ class MCPXmlRpcController(http.Controller):
         """Log audit entry for XML-RPC requests."""
         try:
             ICP = request.env['ir.config_parameter'].sudo()
-            logging_enabled = ICP.get_param('mcp_server.logging_enabled', 'True')
+            logging_enabled = ICP.get_param('mcp_server_ai.logging_enabled', 'True')
             if logging_enabled.lower() not in ('true', '1'):
                 return
 
@@ -129,7 +129,7 @@ class MCPXmlRpcController(http.Controller):
 
             # Check IP whitelist
             ICP = request.env['ir.config_parameter'].sudo()
-            allowed_ips = ICP.get_param('mcp_server.allowed_ips', '')
+            allowed_ips = ICP.get_param('mcp_server_ai.allowed_ips', '')
             if not check_ip_whitelist(request, allowed_ips):
                 return _xmlrpc_fault(2, f"IP {get_client_ip(request)} not whitelisted.")
 
@@ -229,12 +229,12 @@ class MCPXmlRpcController(http.Controller):
 
         # Check IP whitelist
         ICP = request.env['ir.config_parameter'].sudo()
-        allowed_ips = ICP.get_param('mcp_server.allowed_ips', '')
+        allowed_ips = ICP.get_param('mcp_server_ai.allowed_ips', '')
         if not check_ip_whitelist(request, allowed_ips):
             return _xmlrpc_fault(2, f"IP {get_client_ip(request)} not whitelisted.")
 
         # Check rate limit
-        rate_limit = int(ICP.get_param('mcp_server.rate_limit', '10'))
+        rate_limit = int(ICP.get_param('mcp_server_ai.rate_limit', '10'))
         allowed, retry_after = check_rate_limit(uid, rate_limit)
         if not allowed:
             return _xmlrpc_fault(429, f'Rate limit exceeded. Retry after {retry_after}s.')
@@ -246,7 +246,7 @@ class MCPXmlRpcController(http.Controller):
             return _xmlrpc_fault(3, f"Model '{model_name}' is blocked for security.")
 
         # Check YOLO mode
-        yolo_mode = ICP.get_param('mcp_server.yolo_mode', 'disabled')
+        yolo_mode = ICP.get_param('mcp_server_ai.yolo_mode', 'disabled')
         operation = METHOD_OPERATION_MAP.get(rpc_method, 'call')
 
         if yolo_mode == 'disabled':

@@ -671,7 +671,7 @@ AI reads data and gives you a human-friendly answer</code></div>
     "odoo": {
       "command": "python3",
       "args": [
-        "/path/to/mcp_server/mcp_bridge.py"
+        "/path/to/mcp_server_ai/mcp_bridge.py"
       ],
       "env": {
         "ODOO_URL": "http://localhost:8069",
@@ -802,7 +802,7 @@ AI reads data and gives you a human-friendly answer</code></div>
   "mcpServers": {
     "odoo": {
       "command": "python3",
-      "args": ["/path/to/mcp_server/mcp_bridge.py"],
+      "args": ["/path/to/mcp_server_ai/mcp_bridge.py"],
       "env": {
         "ODOO_URL": "http://localhost:8069",
         "ODOO_API_KEY": "your-api-key-here",
@@ -821,7 +821,7 @@ pip install "mcp[cli]" httpx
 # Step 2: Add MCP server (available in all projects)
 claude mcp add-json odoo '{
   "command": "python3",
-  "args": ["/path/to/mcp_server/mcp_bridge.py"],
+  "args": ["/path/to/mcp_server_ai/mcp_bridge.py"],
   "env": {
     "ODOO_URL": "http://localhost:8069",
     "ODOO_API_KEY": "your-api-key-here",
@@ -848,7 +848,7 @@ claude mcp add-json odoo '{
   "mcpServers": {
     "odoo": {
       "command": "python3",
-      "args": ["/path/to/mcp_server/mcp_bridge.py"],
+      "args": ["/path/to/mcp_server_ai/mcp_bridge.py"],
       "env": {
         "ODOO_URL": "http://localhost:8069",
         "ODOO_API_KEY": "your-api-key-here",
@@ -860,7 +860,7 @@ claude mcp add-json odoo '{
         <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">After saving, restart Cursor. The Odoo tools will appear in the AI assistant's tool list.</p>
 
         <div class="tip" style="margin-top: 20px;">
-            <strong>Tip:</strong> Replace <code>/path/to/mcp_server/mcp_bridge.py</code> with the actual <strong>full absolute path</strong> to the bridge script in your Odoo installation, e.g. <code>/opt/odoo/addons/mcp_server/mcp_bridge.py</code>
+            <strong>Tip:</strong> Replace <code>/path/to/mcp_server_ai/mcp_bridge.py</code> with the actual <strong>full absolute path</strong> to the bridge script in your Odoo installation, e.g. <code>/opt/odoo/addons/mcp_server_ai/mcp_bridge.py</code>
         </div>
         <div class="warning" style="margin-top: 12px;">
             <strong>Important:</strong> <code>ODOO_DB</code> is <strong>required for production</strong> servers with multiple databases. The bridge sends it as the <code>X-Odoo-Database</code> header (Odoo 19 native). For single-database setups it can be omitted.
