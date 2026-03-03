@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mail_automation_rule_manager,access_mail_automation_rule_manager,model_mail_automation_rule,base.group_system,1,1,1,1
+access_mail_automation_rule_user,access_mail_automation_rule_user,model_mail_automation_rule,base.group_user,1,0,0,0
