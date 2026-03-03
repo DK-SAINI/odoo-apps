@@ -12,6 +12,7 @@
         "views/mail_automation_rule_views.xml",
         "views/menus.xml",
     ],
+    "images": ["static/description/banner.png"],
     "description": """
         Dynamic Email Automation
         ========================
