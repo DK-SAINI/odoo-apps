@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_dynamic_mail_automation_root"
+              name="Email Automation"
+              parent="base.menu_email"
+              action="action_mail_automation_rule"
+              sequence="110"
+              groups="base.group_system"/>
+</odoo>
