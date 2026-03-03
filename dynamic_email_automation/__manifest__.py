@@ -2,7 +2,7 @@
 {
     "name": "Dynamic Email Automation",
     "version": "17.0.1.1",
-    "author": "Dheeraj Kumar",
+    "author": "Dheeraj Chauhan",
     "category": "Marketing/Email",
     "summary": "Fully dynamic, company-aware email recipient (TO + CC) automation.",
     "depends": ["base", "mail"],
