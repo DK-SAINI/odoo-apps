@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="float_time_second_widget.FloatTimeSecondField">
+        <!-- Readonly mode -->
+        <span t-if="this.props.readonly" t-out="this.formattedValue" />
+
+        <!-- Input mode -->
+        <input t-else=""
+               t-att-id="this.props.id"
+               t-att-type="this.props.inputType"
+               t-ref="this.numpadDecimalRef"
+               t-att-placeholder="this.props.placeholder"
+               class="o_input"
+               autocomplete="off" />
+    </t>
+</templates>
