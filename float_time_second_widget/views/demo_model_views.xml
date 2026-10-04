@@ -1,0 +1,25 @@
+<odoo>
+    <record id="view_demo_model_form" model="ir.ui.view">
+        <field name="name">demo.model.form</field>
+        <field name="model">demo.model</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="time_value" widget="float_time_second"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_demo_model" model="ir.actions.act_window">
+        <field name="name">Float Time Test</field>
+        <field name="res_model">demo.model</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_demo_model_root" name="Float Time Demo"/>
+    <menuitem id="menu_demo_model" name="Float Time" parent="menu_demo_model_root" action="action_demo_model"/>
+</odoo>
